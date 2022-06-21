@@ -1,0 +1,132 @@
+scrMain As screen:
+    Fill: |
+        =gblAppColors.Primary3
+    OnVisible: |-
+        =
+        ClearCollect(
+            colTabs,
+            {
+                ID: 1,
+                Name: "Fill in T&E",
+                Logo: time,
+                BackgroundColor:gblAppColors.Primary3
+            },
+            {
+                ID: 2,
+                Name: "My T&E History",
+                Logo: history,
+                BackgroundColor:gblAppColors.Primary3
+            },
+            {
+                ID: 3,
+                Name: "Analytics",
+                Logo: analytics,
+                BackgroundColor:gblAppColors.Primary3
+            },
+            {
+                ID: 4,
+                Name: "Salary Calculation",
+                Logo: salary,
+                BackgroundColor:gblAppColors.Primary3
+            }
+        );
+        Set(
+            varTabSelected,
+            1
+        );
+
+    cntFullMainPage As groupContainer.verticalAutoLayoutContainer:
+        Height: =768
+        LayoutAlignItems: =LayoutAlignItems.Center
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutJustifyContent: =LayoutJustifyContent.Center
+        LayoutMode: =LayoutMode.Auto
+        Width: =1366
+        ZIndex: =1
+
+        cntHeader As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.Center
+            Fill: =gblAppColors.Primary1
+            FillPortions: =0.1
+            Height: =Parent.Height/3
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =1
+
+            lblTimesheetApp As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Font: =gblAppFonts.Heading
+                Size: =gblAppFonts.Size.Huge
+                Text: ="Timesheet app"
+                Width: =650
+                ZIndex: =1
+
+            imgUserPicture As image:
+                Image: =User().Image
+                ZIndex: =2
+
+            imgCompanyLogo As image:
+                Image: ='logo-white'
+                ZIndex: =3
+
+        cntBody As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            Fill: =gblAppColors.Primary3
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =2
+
+            galTeTabs As gallery.galleryHorizontal:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =Parent.Height
+                Items: =colTabs
+                LayoutMinHeight: =287
+                LayoutMinWidth: =320
+                TemplateSize: =If(Self.Layout = Layout.Horizontal, Min(335, Self.Width - 60), Min(335, Self.Height - 60))
+                Transition: =Transition.Pop
+                Width: =Parent.Width
+                ZIndex: =1
+
+                Rectangle3 As rectangle:
+                    Fill: =ThisItem.BackgroundColor
+                    Height: =658
+                    HoverFill: =RGBA(238,238,238, 1)
+                    OnSelect: |-
+                        =Select(Parent);UpdateIf(colTabs,ID=ThisItem.ID,    {
+                                ID: ThisItem.ID,
+                                Name: ThisItem.Name,
+                                Logo: ThisItem.Logo,
+                                BackgroundColor:gblAppColors.Primary2
+                            }
+                        ); Navigate(scrTimesheet)
+                    Width: =331
+                    X: =4
+                    ZIndex: =1
+
+                Image8 As image:
+                    Height: =216
+                    Image: =ThisItem.Logo
+                    OnSelect: =Select(Parent)
+                    Width: =316
+                    X: =4
+                    Y: =172
+                    ZIndex: =2
+
+                Label2 As label:
+                    Align: =Align.Center
+                    Font: =gblAppFonts.Heading
+                    FontWeight: =FontWeight.Bold
+                    OnSelect: =Select(Parent)
+                    Size: =gblAppFonts.Size.Subtitle
+                    Text: =ThisItem.Name
+                    X: =87
+                    Y: =433
+                    ZIndex: =3
+
